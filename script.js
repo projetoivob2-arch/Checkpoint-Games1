@@ -1,42 +1,7 @@
-const menuButton = document.querySelector(".menu-toggle");
-const navigation = document.querySelector(".main-nav");
 
-if (menuButton && navigation) {
-  menuButton.addEventListener("click", () => {
-    const isOpen = navigation.classList.toggle("open");
-    menuButton.setAttribute("aria-expanded", String(isOpen));
-    menuButton.setAttribute("aria-label", isOpen ? "Fechar menu" : "Abrir menu");
-  });
-}
-
-// Animação suave de entrada dos blocos conforme a pessoa rola a página.
-const animatedItems = document.querySelectorAll(
-  ".hero-copy, .hero-art, .section-heading, .feature-card, .quote-inner, .page-hero, .article-content, .side-note, .contact-card, .contact-form"
-);
-animatedItems.forEach((item, index) => {
-  item.classList.add("reveal");
-  if (item.classList.contains("feature-card")) item.style.setProperty("--reveal-delay", `${index * 100}ms`);
-});
-
-if ("IntersectionObserver" in window) {
-  const observer = new IntersectionObserver((entries, currentObserver) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        currentObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  animatedItems.forEach((item) => observer.observe(item));
-} else {
-  animatedItems.forEach((item) => item.classList.add("is-visible"));
-}
-
-// O formulário usa FormSubmit para encaminhar as mensagens ao e-mail informado.
-const contactForm = document.querySelector("#contact-form");
-if (contactForm) {
-  contactForm.addEventListener("submit", () => {
-    const status = document.querySelector("#form-status");
-    if (status) status.textContent = "Enviando sua mensagem… Você poderá ser redirecionado para a confirmação do envio.";
-  });
-}
+const toggle=document.querySelector('.menu-toggle');
+const nav=document.querySelector('.main-nav');
+if(toggle&&nav){toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));});}
+document.querySelectorAll('.main-nav a').forEach(a=>{if(a.href===location.href)a.classList.add('active');});
+const form=document.querySelector('#suggestion-form');
+if(form){form.addEventListener('submit',e=>{e.preventDefault();const data=new FormData(form);const nome=data.get('nome');const email=data.get('email');const assunto=data.get('assunto');const mensagem=data.get('mensagem');const body=`Nome: ${nome}%0AEmail: ${email}%0AAssunto: ${assunto}%0A%0ASugestão:%0A${mensagem}`;const url=`mailto:projetoivob2@gmail.com?subject=${encodeURIComponent('Sugestão para o Checkpoint Games: '+assunto)}&body=${body}`;window.location.href=url;});}
